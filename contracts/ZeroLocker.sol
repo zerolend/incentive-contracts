@@ -69,10 +69,10 @@ contract ZeroLocker is Initializable, ReentrancyGuard, IZeroLocker, ERC2981 {
     /// @dev Mapping from owner address to mapping of operator addresses.
     mapping(address => mapping(address => bool)) internal ownerToOperators;
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
+    // /// @custom:oz-upgrades-unsafe-allow constructor
+    // constructor() {
+    //     _disableInitializers();
+    // }
 
     function initialize(address _underlying) public initializer {
         WEEK = 1 weeks;

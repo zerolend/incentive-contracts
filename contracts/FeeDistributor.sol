@@ -38,9 +38,9 @@ contract FeeDistributor is IFeeDistributor, ReentrancyGuard, Initializable {
 
     uint256[1000000000000000] public veSupply; // VE total supply at week bounds
 
-    constructor() {
-        _disableInitializers();
-    }
+    // constructor() {
+    //     _disableInitializers();
+    // }
 
     function initialize(
         address _votingEscrow,

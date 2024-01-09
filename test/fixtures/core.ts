@@ -1,16 +1,25 @@
 import { ethers } from "hardhat";
+import { ZERO_ADDRESS } from "../../utils/base/BaseHelper";
+import { deployLendingPool } from "./lending";
 
 export const e18 = BigInt(10) ** 18n;
 
-export async function deployFixture() {
+export async function deployCore() {
+  const lending = await deployLendingPool();
+
   // Contracts are deployed using the first signer/account by default
   const [owner, otherAccount, vault] = await ethers.getSigners();
 
   const ZeroLend = await ethers.getContractFactory("ZeroLend");
-  const token = await ZeroLend.deploy();
+  const token = await ZeroLend.deploy(ZERO_ADDRESS);
 
   const VestedZeroLend = await ethers.getContractFactory("VestedZeroLend");
   const vestedToken = await VestedZeroLend.deploy();
+
+  const ZLRewardsController = await ethers.getContractFactory(
+    "ZLRewardsController"
+  );
+  const zLRewardsController = await ZLRewardsController.deploy();
 
   const ZeroLocker = await ethers.getContractFactory("ZeroLocker");
   const locker = await ZeroLocker.deploy();
@@ -50,6 +59,15 @@ export async function deployFixture() {
     4807692n * e18
   );
 
+  await zLRewardsController.initialize(
+    lending.configurator.target, // address _poolConfigurator,
+    vesting.target, // IStreamedVesting _streamedVesting,
+    locker.target, // IZeroLocker _locker,
+    1000, // uint256 _rewardsPerSecond,
+    token.target, // address _rdntToken,
+    0 // uint256 _endingTimeCadence
+  );
+
   const supply = (100000000000n * e18) / 100n;
 
   // fund 5% unvested to staking bonus
@@ -75,6 +93,7 @@ export async function deployFixture() {
   await stakingEmissions.start();
 
   return {
+    lending,
     bonusPool,
     ethers,
     feeDistributor,
@@ -83,6 +102,7 @@ export async function deployFixture() {
     owner,
     stakingEmissions,
     token,
+    zLRewardsController,
     vestedToken,
     vesting,
   };

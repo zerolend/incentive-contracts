@@ -25,9 +25,9 @@ contract StakingEmissions is OwnableUpgradeable, PausableUpgradeable, Epoch {
     IERC20 public token;
     uint256 public amtPerEpoch;
 
-    constructor() {
-        _disableInitializers();
-    }
+    // constructor() {
+    //     _disableInitializers();
+    // }
 
     function initialize(
         IFeeDistributor _feeDistributor,

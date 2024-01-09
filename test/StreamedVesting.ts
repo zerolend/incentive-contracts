@@ -3,7 +3,7 @@ import {
   time,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
-import { e18, deployFixture as fixture } from "./fixtures/core";
+import { e18, deployCore as fixture } from "./fixtures/core";
 
 describe("StreamedVesting", function () {
   it("Should deploy properly", async function () {

@@ -39,9 +39,9 @@ contract StreamedVesting is
     mapping(address => uint256) public userVestCounts;
     mapping(address => mapping(uint256 => uint256)) public userToIds;
 
-    constructor() {
-        _disableInitializers();
-    }
+    // constructor() {
+    //     _disableInitializers();
+    // }
 
     function initialize(
         IERC20 _underlying,

@@ -112,9 +112,9 @@ contract ZLRewardsController is
         _;
     }
 
-    constructor() {
-        _disableInitializers();
-    }
+    // constructor() {
+    //     _disableInitializers();
+    // }
 
     /**
      * @notice Initializer

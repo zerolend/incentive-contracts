@@ -4,7 +4,7 @@ import { parseUnits } from "ethers";
 
 export const e18 = BigInt(10) ** 18n;
 
-export async function deployFixture() {
+export async function deployLendingPool() {
   // Contracts are deployed using the first signer/account by default
   const [owner, otherAccount, vault] = await ethers.getSigners();
 
@@ -19,6 +19,9 @@ export async function deployFixture() {
   const PoolLogic = await ethers.getContractFactory("PoolLogic");
   const DefaultReserveInterestRateStrategy = await ethers.getContractFactory(
     "DefaultReserveInterestRateStrategy"
+  );
+  const AaveProtocolDataProvider = await ethers.getContractFactory(
+    "AaveProtocolDataProvider"
   );
   const LiquidationLogic = await ethers.getContractFactory("LiquidationLogic");
   const TestnetERC20 = await ethers.getContractFactory("TestnetERC20");
@@ -41,6 +44,9 @@ export async function deployFixture() {
     owner.address
   );
 
+  const protocolDataProvider = await AaveProtocolDataProvider.deploy(
+    addressesProvider.target
+  );
   const borrowLogic = await BorrowLogic.deploy();
   const bridgeLogic = await BridgeLogic.deploy();
   const configuratorLogic = await ConfiguratorLogic.deploy();
@@ -185,5 +191,6 @@ export async function deployFixture() {
     pool,
     addressesProvider,
     aclManager,
+    protocolDataProvider,
   };
 }
